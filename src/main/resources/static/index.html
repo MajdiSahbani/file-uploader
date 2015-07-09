@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="webjars/jquery-file-upload/9.10.1/css/jquery.fileupload.css">
+    <script src="vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+
+<div class="container" role="main">
+    <div class="navbar navbar-inverse navbar-fixed-top">sdf</div>
+    <div class="jumbotron">
+        <h2>File Upload Module</h2>
+
+        <p>Please select multipl files to upload or Drag&Drop them on this area</p>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-14">
+            <div id="panel1" class="panel panel-primary">
+                <div class="panel-heading">
+                    File Upload Form
+                </div>
+                <div class="panel-body">
+                    <form enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="label">Label</label>
+                            <input type="text" class="form-control" id="label" placeholder="label">
+                        </div>
+                        <div class="form-group">
+                            <label for="comment">Comment</label>
+                            <input type="text" class="form-control" id="comment" placeholder="comment">
+                        </div>
+                        <div class="form-group">
+                            <span class="btn btn-success fileinput-button">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                <span>Select files...</span>
+                                <input id="fileupload" type="file" name="file" multiple="">
+                            </span>
+                        </div>
+                        <div id="progress" class="progress">
+                            <div class="progress-bar progress-bar-success"></div>
+                        </div>
+                        <div id="files" class="files"><p/></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="webjars/jquery/1.11.3/jquery.js"></script>
+<script src="vendor/jquery.ui.widget.js"></script>
+<script src="webjars/jquery-file-upload/9.10.1/js/jquery.iframe-transport.js"></script>
+<script src="webjars/jquery-file-upload/9.10.1/js/jquery.fileupload.js"></script>
+<script>
+    $(function () {
+
+        var uploadUrl = '/a/upload';
+        $('#fileupload').fileupload({
+            url: uploadUrl,
+            dataType: 'json',
+            limitMultiFileUploads: 5,
+            formData: function () {
+                return [
+                    {
+                        name: 'label',
+                        value: $('#label').val()
+                    },
+                    {
+                        name: 'comment',
+                        value: $('#comment').val()
+                    }
+                ]
+            },
+            send: function (e, data) {
+                //console.log(data.files);
+            },
+            done: function (e, data) {
+                $.each(data.files, function (index, file) {
+                    $('<p/>').text(file.name).appendTo('#files');
+                });
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress').find('.progress-bar').css(
+                        'width',
+                        progress + '%'
+                );
+            },
+            fail: function (e, data) {
+                console.log(e);
+                $.each(data.files, function (index, file) {
+                    $('<p style="color:red;"/>').text(file.name + " failed !").appendTo('#files');
+                });
+            }
+        }).prop('disabled', !$.support.fileInput)
+                .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+    });
+</script>
+</body>
+</html>
