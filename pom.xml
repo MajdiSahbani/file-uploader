@@ -4,7 +4,7 @@
 
     <groupId>com.cdcfast</groupId>
     <artifactId>cdcfast-upload</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>cdcfast-upload</name>
@@ -25,7 +25,7 @@
 
     <scm>
         <connection>scm:git:git@github.com:jpuzzler/file-uploader.git</connection>
-        <tag>cdcfast-upload-0.0.1</tag>
+        <tag>HEAD</tag>
         <url>https://github.com/jpuzzler/file-uploader.git</url>
     </scm>
 
